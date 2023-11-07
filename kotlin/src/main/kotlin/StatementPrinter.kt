@@ -8,6 +8,7 @@ class StatementPrinter {
     fun print(invoice: Invoice, plays: Map<String, Play>): String {
         var totalAmount = 0
         var volumeCredits = 0
+        var credits = Credits(volumeCredits)
         var result = "Statement for ${invoice.customer}\n"
 
         val format = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
@@ -34,9 +35,18 @@ class StatementPrinter {
             }
 
             // add volume credits
-            volumeCredits += max(perf.audience - 30, 0)
+            val performanceCredits = max(perf.audience - 30, 0)
+            volumeCredits += performanceCredits
+
+            credits = credits.add(Credits(performanceCredits))
+
             // add extra credit for every ten comedy attendees
-            if ("comedy" == play.type) volumeCredits += floor((perf.audience / 5).toDouble()).toInt()
+            if ("comedy" == play.type) {
+                val performanceCreditsByType = floor((perf.audience / 5).toDouble()).toInt()
+                volumeCredits += performanceCreditsByType
+
+                credits = credits.add(Credits(performanceCreditsByType))
+            }
 
             // print line for this order
             result += "  ${play.name}: ${format((thisAmount / 100).toLong())} (${perf.audience} seats)\n"
