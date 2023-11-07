@@ -54,7 +54,7 @@ class StatementPrinter {
             totalAmount += thisAmount
         }
         result += "Amount owed is ${format((totalAmount / 100).toLong())}\n"
-        result += "You earned $volumeCredits credits\n"
+        result += "You earned $credits credits\n"
         return result
     }
 
