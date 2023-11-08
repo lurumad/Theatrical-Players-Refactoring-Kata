@@ -14,30 +14,24 @@ class StatementPrinter {
 
         invoice.performances.forEach { perf ->
             val play = plays.getValue(perf.playID)
-            var thisAmount = 0
-            var performanceAmount = Amount()
+            var performanceAmount: Amount
 
             when (play.type) {
                 "tragedy" -> {
-                    thisAmount = 40000
                     performanceAmount = Amount(40000)
                     if (perf.audience > 30) {
-                        val performanceAmountByAudience = 1000 * (perf.audience - 30)
-                        thisAmount += performanceAmountByAudience
-                        performanceAmount = performanceAmount.add(Amount(performanceAmountByAudience))
+                        val performanceAmountByAudience = Amount(1000 * (perf.audience - 30))
+                        performanceAmount = performanceAmount.add(performanceAmountByAudience)
                     }
                 }
                 "comedy" -> {
-                    thisAmount = 30000
                     performanceAmount = Amount(30000)
                     if (perf.audience > 20) {
-                        val performanceAmountByAudience = 10000 + 500 * (perf.audience - 20)
-                        thisAmount += performanceAmountByAudience
-                        performanceAmount = performanceAmount.add(Amount(performanceAmountByAudience))
+                        val performanceAmountByAudience = Amount(10000 + 500 * (perf.audience - 20))
+                        performanceAmount = performanceAmount.add(performanceAmountByAudience)
                     }
-                    val performanceAmountByType = 300 * perf.audience
-                    thisAmount += performanceAmountByType
-                    performanceAmount = performanceAmount.add(Amount(performanceAmountByType))
+                    val performanceAmountByType = Amount(300 * perf.audience)
+                    performanceAmount = performanceAmount.add(performanceAmountByType)
                 }
                 else -> throw Error("unknown type: {play.type}")
             }
