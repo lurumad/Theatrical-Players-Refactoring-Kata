@@ -34,15 +34,13 @@ class StatementPrinter {
             }
 
             // add volume credits
-            val performanceCredits = max(perf.audience - 30, 0)
-
-            credits = credits.add(Credits(performanceCredits))
+            val performanceCredits = Credits(max(perf.audience - 30, 0))
+            credits = credits.add(performanceCredits)
 
             // add extra credit for every ten comedy attendees
             if ("comedy" == play.type) {
-                val performanceCreditsByType = floor((perf.audience / 5).toDouble()).toInt()
-
-                credits = credits.add(Credits(performanceCreditsByType))
+                val extraPerformanceCreditsByType = Credits(floor((perf.audience / 5).toDouble()).toInt())
+                credits = credits.add(extraPerformanceCreditsByType)
             }
 
             // print line for this order
