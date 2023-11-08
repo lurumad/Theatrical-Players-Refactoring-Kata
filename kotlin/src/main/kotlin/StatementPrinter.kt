@@ -24,7 +24,7 @@ class StatementPrinter {
                     if (perf.audience > 30) {
                         val performanceAmountByAudience = 1000 * (perf.audience - 30)
                         thisAmount += performanceAmountByAudience
-                        performanceAmount = performanceAmount.add(Amount(thisAmount))
+                        performanceAmount = performanceAmount.add(Amount(performanceAmountByAudience))
                     }
                 }
                 "comedy" -> {
@@ -33,11 +33,11 @@ class StatementPrinter {
                     if (perf.audience > 20) {
                         val performanceAmountByAudience = 10000 + 500 * (perf.audience - 20)
                         thisAmount += performanceAmountByAudience
-                        performanceAmount = performanceAmount.add(Amount(thisAmount))
+                        performanceAmount = performanceAmount.add(Amount(performanceAmountByAudience))
                     }
                     val performanceAmountByType = 300 * perf.audience
                     thisAmount += performanceAmountByType
-                    performanceAmount = performanceAmount.add(Amount(thisAmount))
+                    performanceAmount = performanceAmount.add(Amount(performanceAmountByType))
                 }
                 else -> throw Error("unknown type: {play.type}")
             }
@@ -53,9 +53,9 @@ class StatementPrinter {
             }
 
             // print line for this order
-            result += "  ${play.name}: ${format((thisAmount / 100).toLong())} (${perf.audience} seats)\n"
+            result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${perf.audience} seats)\n"
 
-            totalAmount += thisAmount
+            totalAmount += performanceAmount.amount
         }
         result += "Amount owed is ${format((totalAmount / 100).toLong())}\n"
         result += "You earned $credits credits\n"
