@@ -20,18 +20,18 @@ class StatementPrinter {
                 "tragedy" -> {
                     performanceAmount = Amount(40000)
                     if (perf.audience > 30) {
-                        val performanceAmountByAudience = Amount(1000 * (perf.audience - 30))
-                        performanceAmount = performanceAmount.add(performanceAmountByAudience)
+                        val extraAmountByAudience = Amount(1000 * (perf.audience - 30))
+                        performanceAmount = performanceAmount.add(extraAmountByAudience)
                     }
                 }
                 "comedy" -> {
                     performanceAmount = Amount(30000)
                     if (perf.audience > 20) {
-                        val performanceAmountByAudience = Amount(10000 + 500 * (perf.audience - 20))
-                        performanceAmount = performanceAmount.add(performanceAmountByAudience)
+                        val extraAmountByAudience = Amount(10000 + 500 * (perf.audience - 20))
+                        performanceAmount = performanceAmount.add(extraAmountByAudience)
                     }
-                    val performanceAmountByType = Amount(300 * perf.audience)
-                    performanceAmount = performanceAmount.add(performanceAmountByType)
+                    val extraAmountByType = Amount(300 * perf.audience)
+                    performanceAmount = performanceAmount.add(extraAmountByType)
                 }
                 else -> throw Error("unknown type: {play.type}")
             }
