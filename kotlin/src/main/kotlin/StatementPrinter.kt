@@ -6,7 +6,6 @@ import kotlin.math.max
 class StatementPrinter {
 
     fun print(invoice: Invoice, plays: Map<String, Play>): String {
-        var totalAmount = 0
         var invoiceAmount = Amount(0)
         var credits = Credits(0)
         var result = "Statement for ${invoice.customer}\n"
@@ -50,10 +49,9 @@ class StatementPrinter {
             // print line for this order
             result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${perf.audience} seats)\n"
 
-            totalAmount += performanceAmount.amount
             invoiceAmount = invoiceAmount.add(performanceAmount)
         }
-        result += "Amount owed is ${format((totalAmount / 100).toLong())}\n"
+        result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
         result += "You earned $credits credits\n"
         return result
     }
