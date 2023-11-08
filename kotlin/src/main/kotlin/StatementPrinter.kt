@@ -15,20 +15,29 @@ class StatementPrinter {
         invoice.performances.forEach { perf ->
             val play = plays.getValue(perf.playID)
             var thisAmount = 0
+            var performanceAmount = Amount()
 
             when (play.type) {
                 "tragedy" -> {
                     thisAmount = 40000
+                    performanceAmount = Amount(40000)
                     if (perf.audience > 30) {
-                        thisAmount += 1000 * (perf.audience - 30)
+                        val performanceAmountByAudience = 1000 * (perf.audience - 30)
+                        thisAmount += performanceAmountByAudience
+                        performanceAmount = performanceAmount.add(Amount(thisAmount))
                     }
                 }
                 "comedy" -> {
                     thisAmount = 30000
+                    performanceAmount = Amount(30000)
                     if (perf.audience > 20) {
-                        thisAmount += 10000 + 500 * (perf.audience - 20)
+                        val performanceAmountByAudience = 10000 + 500 * (perf.audience - 20)
+                        thisAmount += performanceAmountByAudience
+                        performanceAmount = performanceAmount.add(Amount(thisAmount))
                     }
-                    thisAmount += 300 * perf.audience
+                    val performanceAmountByType = 300 * perf.audience
+                    thisAmount += performanceAmountByType
+                    performanceAmount = performanceAmount.add(Amount(thisAmount))
                 }
                 else -> throw Error("unknown type: {play.type}")
             }

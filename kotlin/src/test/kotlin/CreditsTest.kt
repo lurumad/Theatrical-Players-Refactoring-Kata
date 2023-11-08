@@ -5,6 +5,6 @@ class CreditsTest {
     @Test
     fun `should be able to accumulate credits`() {
         val credits = Credits(10)
-        credits.add(Credits(5)).credits `should be equal to` 15
+        credits.add(Credits(5)) `should be equal to` Credits(15)
     }
 }
