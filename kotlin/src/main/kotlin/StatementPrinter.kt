@@ -12,42 +12,49 @@ class StatementPrinter {
 
         val format = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
 
-        invoice.performances.forEach { perf ->
-            val play = plays.getValue(perf.playID)
-            var performanceAmount: Amount
-
-            when (play.type) {
-                "tragedy" -> {
-                    performanceAmount = Amount(40000)
-                    performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
-                    performanceAmount = performanceAmount.add(tragedyExtraAmountByGenre(perf))
-                }
-                "comedy" -> {
-                    performanceAmount = Amount(30000)
-                    performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
-                    performanceAmount = performanceAmount.add(comedyExtraAmountByGenre(perf))
-                }
-                else -> throw Error("unknown type: {play.type}")
-            }
+        invoice.performances.forEach { performance ->
+            val play = plays.getValue(performance.playID)
+            val performanceAmount: Amount = performanceAmount(performance, play)
 
             // add volume credits
-            val performanceCredits = Credits(max(perf.audience - 30, 0))
+            val performanceCredits = Credits(max(performance.audience - 30, 0))
             credits = credits.add(performanceCredits)
 
             // add extra credit for every ten comedy attendees
             if ("comedy" == play.type) {
-                val extraPerformanceCreditsByType = Credits(floor((perf.audience / 5).toDouble()).toInt())
+                val extraPerformanceCreditsByType = Credits(floor((performance.audience / 5).toDouble()).toInt())
                 credits = credits.add(extraPerformanceCreditsByType)
             }
 
             // print line for this order
-            result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${perf.audience} seats)\n"
+            result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${performance.audience} seats)\n"
 
             invoiceAmount = invoiceAmount.add(performanceAmount)
         }
         result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
         result += "You earned $credits credits\n"
         return result
+    }
+
+    private fun performanceAmount(perf: Performance, play: Play): Amount {
+        var performanceAmount: Amount
+
+        when (play.type) {
+            "tragedy" -> {
+                performanceAmount = Amount(40000)
+                performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
+                performanceAmount = performanceAmount.add(tragedyExtraAmountByGenre(perf))
+            }
+
+            "comedy" -> {
+                performanceAmount = Amount(30000)
+                performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
+                performanceAmount = performanceAmount.add(comedyExtraAmountByGenre(perf))
+            }
+
+            else -> throw Error("unknown type: {play.type}")
+        }
+        return performanceAmount
     }
 
     private fun tragedyExtraAmountByGenre(perf: Performance): Amount {
