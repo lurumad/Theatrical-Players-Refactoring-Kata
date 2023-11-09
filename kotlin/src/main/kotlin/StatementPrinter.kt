@@ -23,10 +23,7 @@ class StatementPrinter {
                 }
                 "comedy" -> {
                     performanceAmount = Amount(30000)
-                    if (perf.audience > 20) {
-                        val extraAmountByAudience = Amount(10000 + 500 * (perf.audience - 20))
-                        performanceAmount = performanceAmount.add(extraAmountByAudience)
-                    }
+                    performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
                     val extraAmountByType = Amount(300 * perf.audience)
                     performanceAmount = performanceAmount.add(extraAmountByType)
                 }
@@ -51,6 +48,12 @@ class StatementPrinter {
         result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
         result += "You earned $credits credits\n"
         return result
+    }
+
+    private fun comedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 20) {
+        Amount(10000 + 500 * (perf.audience - 20))
+    } else {
+        Amount(0)
     }
 
     private fun tragedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 30) {
