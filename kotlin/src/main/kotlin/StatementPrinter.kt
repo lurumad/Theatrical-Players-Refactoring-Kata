@@ -20,6 +20,7 @@ class StatementPrinter {
                 "tragedy" -> {
                     performanceAmount = Amount(40000)
                     performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
+                    performanceAmount = performanceAmount.add(tragedyExtraAmountByGenre(perf))
                 }
                 "comedy" -> {
                     performanceAmount = Amount(30000)
@@ -47,6 +48,10 @@ class StatementPrinter {
         result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
         result += "You earned $credits credits\n"
         return result
+    }
+
+    private fun tragedyExtraAmountByGenre(perf: Performance): Amount {
+        return Amount(0)
     }
 
     private fun comedyExtraAmountByGenre(perf: Performance) = Amount(300 * perf.audience)
