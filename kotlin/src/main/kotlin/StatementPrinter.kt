@@ -19,8 +19,7 @@ class StatementPrinter {
             when (play.type) {
                 "tragedy" -> {
                     performanceAmount = Amount(40000)
-                    val extraAmountByAudience = extraAmountByAudience(perf)
-                    performanceAmount = performanceAmount.add(extraAmountByAudience)
+                    performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
                 }
                 "comedy" -> {
                     performanceAmount = Amount(30000)
@@ -54,7 +53,7 @@ class StatementPrinter {
         return result
     }
 
-    private fun extraAmountByAudience(perf: Performance) = if (perf.audience > 30) {
+    private fun tragedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 30) {
         Amount(1000 * (perf.audience - 30))
     } else {
         Amount(0)
