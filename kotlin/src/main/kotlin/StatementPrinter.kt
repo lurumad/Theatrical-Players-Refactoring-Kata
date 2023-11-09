@@ -7,7 +7,7 @@ class StatementPrinter {
 
     fun print(invoice: Invoice, plays: Map<String, Play>): String {
         var invoiceAmount = Amount(0)
-        var credits = Credits(0)
+        var invoiceCredits = Credits(0)
         var result = "Statement for ${invoice.customer}\n"
 
         val format = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
@@ -15,22 +15,22 @@ class StatementPrinter {
         invoice.performances.forEach { performance ->
             val play = plays.getValue(performance.playID)
             val performanceAmount: Amount = performanceAmount(performance, play)
+            val performanceCredits = performanceCredits(performance, play)
 
-            // add volume credits
-            val performanceCredits = Credits(max(performance.audience - 30, 0))
-            credits = credits.add(performanceCredits)
-
-            // add extra credit for every ten comedy attendees
-            credits = credits.add(performanceCreditsByGenre(performance, play))
-
-            // print line for this order
-            result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${performance.audience} seats)\n"
-
+            invoiceCredits = invoiceCredits.add(performanceCredits)
             invoiceAmount = invoiceAmount.add(performanceAmount)
+
+            result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${performance.audience} seats)\n"
         }
         result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
-        result += "You earned $credits credits\n"
+        result += "You earned $invoiceCredits credits\n"
         return result
+    }
+
+    private fun performanceCredits(performance: Performance, play: Play): Credits {
+        var performanceCredits = Credits(max(performance.audience - 30, 0))
+        performanceCredits = performanceCredits.add(performanceCreditsByGenre(performance, play))
+        return performanceCredits
     }
 
     private fun performanceCreditsByGenre(performance: Performance, play: Play) = if ("comedy" == play.type) {
