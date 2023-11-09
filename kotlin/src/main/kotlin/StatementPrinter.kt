@@ -21,10 +21,7 @@ class StatementPrinter {
             credits = credits.add(performanceCredits)
 
             // add extra credit for every ten comedy attendees
-            if ("comedy" == play.type) {
-                val extraPerformanceCreditsByType = Credits(floor((performance.audience / 5).toDouble()).toInt())
-                credits = credits.add(extraPerformanceCreditsByType)
-            }
+            credits = credits.add(performanceCreditsByGenre(performance, play))
 
             // print line for this order
             result += "  ${play.name}: ${format((performanceAmount.usd()).toLong())} (${performance.audience} seats)\n"
@@ -34,6 +31,12 @@ class StatementPrinter {
         result += "Amount owed is ${format((invoiceAmount.usd()).toLong())}\n"
         result += "You earned $credits credits\n"
         return result
+    }
+
+    private fun performanceCreditsByGenre(performance: Performance, play: Play) = if ("comedy" == play.type) {
+        Credits(floor((performance.audience / 5).toDouble()).toInt())
+    } else {
+        Credits(0)
     }
 
     private fun performanceAmount(perf: Performance, play: Play): Amount {
