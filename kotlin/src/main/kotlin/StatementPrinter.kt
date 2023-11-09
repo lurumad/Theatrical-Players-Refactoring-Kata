@@ -24,8 +24,7 @@ class StatementPrinter {
                 "comedy" -> {
                     performanceAmount = Amount(30000)
                     performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
-                    val extraAmountByType = Amount(300 * perf.audience)
-                    performanceAmount = performanceAmount.add(extraAmountByType)
+                    performanceAmount = performanceAmount.add(comedyExtraAmountByGenre(perf))
                 }
                 else -> throw Error("unknown type: {play.type}")
             }
@@ -49,6 +48,8 @@ class StatementPrinter {
         result += "You earned $credits credits\n"
         return result
     }
+
+    private fun comedyExtraAmountByGenre(perf: Performance) = Amount(300 * perf.audience)
 
     private fun comedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 20) {
         Amount(10000 + 500 * (perf.audience - 20))
