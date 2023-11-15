@@ -33,31 +33,27 @@ class StatementPrinter {
         return performanceCredits
     }
 
-    private fun performanceCreditsByGenre(performance: Performance, play: Play) = if ("comedy" == play.type) {
-        Credits(floor((performance.audience / 5).toDouble()).toInt())
-    } else {
-        Credits(0)
+    private fun performanceCreditsByGenre(performance: Performance, play: Play): Credits {
+        if ("comedy" == play.type) {
+            return Credits(floor((performance.audience / 5).toDouble()).toInt())
+        }
+        return Credits(0)
     }
 
     private fun performanceAmount(perf: Performance, play: Play): Amount {
-        var performanceAmount: Amount
-
-        when (play.type) {
-            "tragedy" -> {
-                performanceAmount = Amount(40000)
-                performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
-                performanceAmount = performanceAmount.add(tragedyExtraAmountByGenre(perf))
-            }
-
-            "comedy" -> {
-                performanceAmount = Amount(30000)
-                performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
-                performanceAmount = performanceAmount.add(comedyExtraAmountByGenre(perf))
-            }
-
-            else -> throw Error("unknown type: {play.type}")
+        if (play.type == "tragedy") {
+            var performanceAmount = Amount(40000)
+            performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
+            return performanceAmount.add(tragedyExtraAmountByGenre(perf))
         }
-        return performanceAmount
+
+        if (play.type == "comedy") {
+            var performanceAmount = Amount(30000)
+            performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
+            return performanceAmount.add(comedyExtraAmountByGenre(perf))
+        }
+
+        throw Error("unknown type: {play.type}")
     }
 
     private fun tragedyExtraAmountByGenre(perf: Performance): Amount {
@@ -66,15 +62,17 @@ class StatementPrinter {
 
     private fun comedyExtraAmountByGenre(perf: Performance) = Amount(300 * perf.audience)
 
-    private fun comedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 20) {
-        Amount(10000 + 500 * (perf.audience - 20))
-    } else {
-        Amount(0)
+    private fun comedyExtraAmountByAudience(perf: Performance): Amount {
+        if (perf.audience > 20) {
+            return Amount(10000 + 500 * (perf.audience - 20))
+        }
+        return Amount(0)
     }
 
-    private fun tragedyExtraAmountByAudience(perf: Performance) = if (perf.audience > 30) {
-        Amount(1000 * (perf.audience - 30))
-    } else {
-        Amount(0)
+    private fun tragedyExtraAmountByAudience(perf: Performance): Amount {
+        if (perf.audience > 30) {
+            return Amount(1000 * (perf.audience - 30))
+        }
+        return Amount(0)
     }
 }
