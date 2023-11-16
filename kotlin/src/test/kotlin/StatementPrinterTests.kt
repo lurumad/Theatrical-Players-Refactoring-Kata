@@ -7,24 +7,23 @@ class StatementPrinterTests {
 
     @Test
     internal fun exampleStatement() {
-
-        val plays = mapOf(
-            "hamlet" to Play("Hamlet", "tragedy"),
-            "as-like" to Play("As You Like It", "comedy"),
-            "othello" to Play("Othello", "tragedy")
+        val catalog = PlayCatalog(
+            mapOf(
+                "hamlet" to Play("Hamlet", "tragedy"),
+                "as-like" to Play("As You Like It", "comedy"),
+                "othello" to Play("Othello", "tragedy")
+            )
         )
-
-        val catalog = PlayCatalog(plays)
-
-        val invoice = Invoice(
-            "BigCo", listOf(
+        val performanceList = PerformanceList(
+            listOf(
                 Performance("hamlet", 55),
                 Performance("as-like", 35),
                 Performance("othello", 40)
             )
         )
-
+        val invoice = Invoice("BigCo", performanceList)
         val statementPrinter = StatementPrinter()
+
         val result = statementPrinter.print(invoice, catalog)
 
         verify(result)
@@ -32,21 +31,21 @@ class StatementPrinterTests {
 
     @Test
     internal fun statementWithNewPlayTypes() {
-        val plays = mapOf(
-            "henry-v" to Play("Henry V", "history"),
-            "as-like" to Play("As You Like It", "pastoral")
+        val catalog = PlayCatalog(
+            mapOf(
+                "henry-v" to Play("Henry V", "history"),
+                "as-like" to Play("As You Like It", "pastoral")
+            )
         )
-
-        val catalog = PlayCatalog(plays)
-
-        val invoice = Invoice(
-            "BigCo", listOf(
+        val performanceList = PerformanceList(
+            listOf(
                 Performance("henry-v", 53),
                 Performance("as-like", 55)
             )
         )
-
+        val invoice = Invoice("BigCo", performanceList)
         val statementPrinter = StatementPrinter()
+        
         assertThrows(Error::class.java) { statementPrinter.print(invoice, catalog) }
     }
 }
