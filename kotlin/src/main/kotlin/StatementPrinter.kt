@@ -5,7 +5,7 @@ import kotlin.math.max
 
 class StatementPrinter {
 
-    fun print(invoice: Invoice, plays: Map<String, Play>): String {
+    fun print(invoice: Invoice, catalog: PlayCatalog): String {
         var invoiceAmount = Amount(0)
         var invoiceCredits = Credits(0)
         var result = "Statement for ${invoice.customer}\n"
@@ -13,7 +13,7 @@ class StatementPrinter {
         val format = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
 
         invoice.performances.forEach { performance ->
-            val play = plays.getValue(performance.playID)
+            val play = catalog.playBy(performance.playID)
             val performanceAmount: Amount = performanceAmount(performance, play)
             val performanceCredits = performanceCredits(performance, play)
 

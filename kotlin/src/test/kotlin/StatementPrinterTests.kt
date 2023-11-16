@@ -14,6 +14,8 @@ class StatementPrinterTests {
             "othello" to Play("Othello", "tragedy")
         )
 
+        val catalog = PlayCatalog(plays)
+
         val invoice = Invoice(
             "BigCo", listOf(
                 Performance("hamlet", 55),
@@ -23,7 +25,7 @@ class StatementPrinterTests {
         )
 
         val statementPrinter = StatementPrinter()
-        val result = statementPrinter.print(invoice, plays)
+        val result = statementPrinter.print(invoice, catalog)
 
         verify(result)
     }
@@ -35,6 +37,8 @@ class StatementPrinterTests {
             "as-like" to Play("As You Like It", "pastoral")
         )
 
+        val catalog = PlayCatalog(plays)
+
         val invoice = Invoice(
             "BigCo", listOf(
                 Performance("henry-v", 53),
@@ -43,6 +47,6 @@ class StatementPrinterTests {
         )
 
         val statementPrinter = StatementPrinter()
-        assertThrows(Error::class.java) { statementPrinter.print(invoice, plays) }
+        assertThrows(Error::class.java) { statementPrinter.print(invoice, catalog) }
     }
 }
