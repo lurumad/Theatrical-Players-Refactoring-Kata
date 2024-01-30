@@ -42,18 +42,26 @@ class StatementPrinter {
 
     private fun performanceAmount(perf: Performance, play: Play): Amount {
         if (play.type == "tragedy") {
-            var performanceAmount = Amount(40000)
-            performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
-            return performanceAmount.add(tragedyExtraAmountByGenre(perf))
+            return performanceAmountByTragedy(perf)
         }
 
         if (play.type == "comedy") {
-            var performanceAmount = Amount(30000)
-            performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
-            return performanceAmount.add(comedyExtraAmountByGenre(perf))
+            return performanceAmountByComedy(perf)
         }
 
         throw Error("unknown type: {play.type}")
+    }
+
+    private fun performanceAmountByComedy(perf: Performance): Amount {
+        var performanceAmount = Amount(30000)
+        performanceAmount = performanceAmount.add(comedyExtraAmountByAudience(perf))
+        return performanceAmount.add(comedyExtraAmountByGenre(perf))
+    }
+
+    private fun performanceAmountByTragedy(perf: Performance): Amount {
+        var performanceAmount = Amount(40000)
+        performanceAmount = performanceAmount.add(tragedyExtraAmountByAudience(perf))
+        return performanceAmount.add(tragedyExtraAmountByGenre(perf))
     }
 
     private fun tragedyExtraAmountByGenre(perf: Performance): Amount {
