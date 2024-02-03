@@ -3,12 +3,12 @@ import java.util.Locale
 
 class StatementPrinter {
 
+    val format: (Long) -> String = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
+
     fun print(invoice: Invoice, catalog: PlayCatalog): String {
         var invoiceAmount = Amount(0)
         var invoiceCredits = Credits(0)
         var result = "Statement for ${invoice.customer}\n"
-
-        val format = { number: Long ->  NumberFormat.getCurrencyInstance(Locale.US).format(number)}
 
         invoice.performances.forEach { performance ->
             val play = catalog.playBy(performance.playID)
