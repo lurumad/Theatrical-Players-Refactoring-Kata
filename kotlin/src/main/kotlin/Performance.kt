@@ -59,4 +59,8 @@ data class Performance(val playID: String, val audience: Int) {
         }
         return Credits(0)
     }
+
+    fun fill(template: StatementTemplate, play: Play) {
+        template.line(play.name, amount(play), audience)
+    }
 }
