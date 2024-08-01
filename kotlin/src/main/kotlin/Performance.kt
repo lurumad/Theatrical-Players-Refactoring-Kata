@@ -65,10 +65,6 @@ data class Performance(
         return Credits(0)
     }
 
-    fun fill(template: StatementTemplate) {
-        template.line(play.name, amount(), audience)
-    }
-
     override fun save(): PerformanceMemento {
         return PerformanceMemento(play.name, amount().save().amount, audience)
     }
