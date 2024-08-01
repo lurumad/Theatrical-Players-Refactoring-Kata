@@ -7,7 +7,7 @@ class StatementPrinterTests {
 
     @Test
     internal fun exampleStatement() {
-        val catalog = PlayCatalog(
+        val catalog = Plays(
             mapOf(
                 "hamlet" to Play("Hamlet", "tragedy"),
                 "as-like" to Play("As You Like It", "comedy"),
@@ -31,7 +31,7 @@ class StatementPrinterTests {
 
     @Test
     internal fun statementWithNewPlayTypes() {
-        val catalog = PlayCatalog(
+        val catalog = Plays(
             mapOf(
                 "henry-v" to Play("Henry V", "history"),
                 "as-like" to Play("As You Like It", "pastoral")
