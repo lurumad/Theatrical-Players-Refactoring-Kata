@@ -1,10 +1,7 @@
 class StatementPrinter {
 
-    fun print(invoice: Invoice, catalog: Plays): String {
-        val statementTemplate = StatementTemplate()
-
-        invoice.fill(statementTemplate, catalog)
-
+    fun print(invoice: Invoice): String {
+        val statementTemplate = StatementTemplate(invoice.save())
         return statementTemplate.render()
     }
 

@@ -1,20 +1,20 @@
+import memento.PerformanceMemento
+import memento.State
 import kotlin.math.floor
 import kotlin.math.max
 
 data class Performance(
-    private val playID: String,
+    private val play: Play,
     private val audience: Int
-) {
+): State<PerformanceMemento> {
 
-    fun credits(plays: Plays): Credits {
-        val play = plays.playBy(playID)
+    fun credits(): Credits {
         var performanceCredits = Credits(max(audience - 30, 0))
         performanceCredits = performanceCredits.add(creditsByGenre(play))
         return performanceCredits
     }
 
-    fun amount(plays: Plays): Amount {
-        val play = plays.playBy(playID)
+    fun amount(): Amount {
         if (play.type == "tragedy") {
             return amountByTragedy()
         }
@@ -65,8 +65,11 @@ data class Performance(
         return Credits(0)
     }
 
-    fun fill(template: StatementTemplate, plays: Plays) {
-        val play = plays.playBy(playID)
-        template.line(play.name, amount(plays), audience)
+    fun fill(template: StatementTemplate) {
+        template.line(play.name, amount(), audience)
+    }
+
+    override fun save(): PerformanceMemento {
+        return PerformanceMemento(play.name, amount().save().amount, audience)
     }
 }

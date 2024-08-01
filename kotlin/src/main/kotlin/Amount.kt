@@ -1,9 +1,16 @@
-data class Amount(val amount: Int = 0) {
+import memento.AmountMemento
+import memento.State
+
+data class Amount(private val amount: Int = 0): State<AmountMemento> {
     fun add(another: Amount): Amount {
         return Amount(amount + another.amount)
     }
 
-    fun usd(): Int {
+    private fun usd(): Int {
         return amount / 100
+    }
+
+    override fun save(): AmountMemento {
+        return AmountMemento(usd())
     }
 }

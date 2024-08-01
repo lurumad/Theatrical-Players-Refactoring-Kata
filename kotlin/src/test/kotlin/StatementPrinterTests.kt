@@ -16,15 +16,15 @@ class StatementPrinterTests {
         )
         val performanceList = PerformanceList(
             listOf(
-                Performance("hamlet", 55),
-                Performance("as-like", 35),
-                Performance("othello", 40)
+                Performance(Play("Hamlet", "tragedy"), 55),
+                Performance(Play("As You Like It", "comedy"), 35),
+                Performance(Play("Othello", "tragedy"), 40)
             )
         )
         val invoice = Invoice("BigCo", performanceList)
         val statementPrinter = StatementPrinter()
 
-        val result = statementPrinter.print(invoice, catalog)
+        val result = statementPrinter.print(invoice)
 
         verify(result)
     }
@@ -39,13 +39,13 @@ class StatementPrinterTests {
         )
         val performanceList = PerformanceList(
             listOf(
-                Performance("henry-v", 53),
-                Performance("as-like", 55)
+                Performance(Play("Henry V", "history"), 53),
+                Performance(Play("As You Like It", "pastoral"), 55)
             )
         )
         val invoice = Invoice("BigCo", performanceList)
         val statementPrinter = StatementPrinter()
         
-        assertThrows(Error::class.java) { statementPrinter.print(invoice, catalog) }
+        assertThrows(Error::class.java) { statementPrinter.print(invoice) }
     }
 }

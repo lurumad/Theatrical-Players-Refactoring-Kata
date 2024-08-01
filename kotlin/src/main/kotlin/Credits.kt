@@ -1,6 +1,13 @@
-data class Credits(val credits: Int) {
+import memento.CreditsMemento
+import memento.State
+
+data class Credits(val credits: Int): State<CreditsMemento> {
     fun add(other: Credits): Credits {
         return Credits(credits + other.credits)
+    }
+
+    override fun save(): CreditsMemento {
+        return CreditsMemento(credits)
     }
 
     override fun toString(): String {
