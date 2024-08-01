@@ -1,15 +1,20 @@
 import kotlin.math.floor
 import kotlin.math.max
 
-data class Performance(val playID: String, val audience: Int) {
+data class Performance(
+    private val playID: String,
+    private val audience: Int
+) {
 
-    fun credits(play: Play): Credits {
+    fun credits(plays: Plays): Credits {
+        val play = plays.playBy(playID)
         var performanceCredits = Credits(max(audience - 30, 0))
         performanceCredits = performanceCredits.add(creditsByGenre(play))
         return performanceCredits
     }
 
-    fun amount(play: Play): Amount {
+    fun amount(plays: Plays): Amount {
+        val play = plays.playBy(playID)
         if (play.type == "tragedy") {
             return amountByTragedy()
         }
@@ -60,7 +65,8 @@ data class Performance(val playID: String, val audience: Int) {
         return Credits(0)
     }
 
-    fun fill(template: StatementTemplate, play: Play) {
-        template.line(play.name, amount(play), audience)
+    fun fill(template: StatementTemplate, plays: Plays) {
+        val play = plays.playBy(playID)
+        template.line(play.name, amount(plays), audience)
     }
 }

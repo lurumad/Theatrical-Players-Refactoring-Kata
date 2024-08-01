@@ -6,9 +6,7 @@ data class Invoice(
         template.customer(customer)
 
         performances.forEach { performance ->
-            val play = plays.playBy(performance.playID)
-            performance.fill(template, play)
-
+            performance.fill(template, plays)
         }
 
         template.amount(amount(plays))
@@ -20,8 +18,7 @@ data class Invoice(
     private fun credits(plays: Plays): Credits {
         var invoiceCredits = Credits(0)
         performances.forEach { performance ->
-            val play = plays.playBy(performance.playID)
-            invoiceCredits = invoiceCredits.add(performance.credits(play))
+            invoiceCredits = invoiceCredits.add(performance.credits(plays))
         }
         return invoiceCredits
     }
@@ -29,8 +26,7 @@ data class Invoice(
     private fun amount(plays: Plays): Amount {
         var invoiceAmount = Amount(0)
         performances.forEach { performance ->
-            val play = plays.playBy(performance.playID)
-            invoiceAmount = invoiceAmount.add(performance.amount(play))
+            invoiceAmount = invoiceAmount.add(performance.amount(plays))
         }
         return invoiceAmount
     }
