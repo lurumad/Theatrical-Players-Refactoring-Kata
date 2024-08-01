@@ -7,13 +7,6 @@ class StatementPrinterTests {
 
     @Test
     internal fun exampleStatement() {
-        val catalog = Plays(
-            mapOf(
-                "hamlet" to Play("Hamlet", "tragedy"),
-                "as-like" to Play("As You Like It", "comedy"),
-                "othello" to Play("Othello", "tragedy")
-            )
-        )
         val performanceList = PerformanceList(
             listOf(
                 Performance(Play("Hamlet", "tragedy"), 55),
@@ -31,12 +24,6 @@ class StatementPrinterTests {
 
     @Test
     internal fun statementWithNewPlayTypes() {
-        val catalog = Plays(
-            mapOf(
-                "henry-v" to Play("Henry V", "history"),
-                "as-like" to Play("As You Like It", "pastoral")
-            )
-        )
         val performanceList = PerformanceList(
             listOf(
                 Performance(Play("Henry V", "history"), 53),
