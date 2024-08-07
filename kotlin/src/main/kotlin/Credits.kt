@@ -6,7 +6,7 @@ data class Credits(val credits: Int): State<CreditsMemento> {
         return Credits(credits + other.credits)
     }
 
-    override fun save(): CreditsMemento {
+    override fun state(): CreditsMemento {
         return CreditsMemento(credits)
     }
 

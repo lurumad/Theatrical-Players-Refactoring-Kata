@@ -10,7 +10,7 @@ data class Amount(private val amount: Int = 0): State<AmountMemento> {
         return amount / 100
     }
 
-    override fun save(): AmountMemento {
+    override fun state(): AmountMemento {
         return AmountMemento(usd())
     }
 }

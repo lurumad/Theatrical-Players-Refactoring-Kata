@@ -9,63 +9,14 @@ data class Performance(
 ): State<PerformanceMemento> {
 
     fun credits(): Credits {
-        var performanceCredits = Credits(max(audience - 30, 0))
-        performanceCredits = performanceCredits.add(creditsByGenre(play))
-        return performanceCredits
+        return play.credits(audience)
     }
 
     fun amount(): Amount {
-        if (play.type == "tragedy") {
-            return amountByTragedy()
-        }
-
-        if (play.type == "comedy") {
-            return amountByComedy()
-        }
-
-        throw Error("unknown type: {play.type}")
+        return play.amount(audience)
     }
 
-    private fun amountByComedy(): Amount {
-        var performanceAmount = Amount(30000)
-        performanceAmount = performanceAmount.add(comedyExtraAmountByAudience())
-        return performanceAmount.add(comedyExtraAmountByGenre())
-    }
-
-    private fun amountByTragedy(): Amount {
-        var performanceAmount = Amount(40000)
-        performanceAmount = performanceAmount.add(extraAmountByAudience())
-        return performanceAmount.add(tragedyExtraAmountByGenre())
-    }
-
-    private fun extraAmountByAudience(): Amount {
-        if (audience > 30) {
-            return Amount(1000 * (audience - 30))
-        }
-        return Amount(0)
-    }
-
-    private fun comedyExtraAmountByAudience(): Amount {
-        if (audience > 20) {
-            return Amount(10000 + 500 * (audience - 20))
-        }
-        return Amount(0)
-    }
-
-    private fun comedyExtraAmountByGenre() = Amount(300 * audience)
-
-    private fun tragedyExtraAmountByGenre(): Amount {
-        return Amount(0)
-    }
-
-    private fun creditsByGenre(play: Play): Credits {
-        if ("comedy" == play.type) {
-            return Credits(floor((audience / 5).toDouble()).toInt())
-        }
-        return Credits(0)
-    }
-
-    override fun save(): PerformanceMemento {
-        return PerformanceMemento(play.name, amount().save().amount, audience)
+    override fun state(): PerformanceMemento {
+        return PerformanceMemento(play.name, amount().state().amount, audience)
     }
 }

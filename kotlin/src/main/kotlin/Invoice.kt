@@ -23,12 +23,12 @@ data class Invoice(
         return invoiceAmount
     }
 
-    override fun save(): InvoiceMemento {
+    override fun state(): InvoiceMemento {
         return InvoiceMemento(
             customer,
-            amount().save().amount,
-            credits().save().credits,
-            performances.map { it.save() }
+            amount().state().amount,
+            credits().state().credits,
+            performances.map { it.state() }
         )
     }
 }

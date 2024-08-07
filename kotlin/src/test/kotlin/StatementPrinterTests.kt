@@ -9,9 +9,9 @@ class StatementPrinterTests {
     internal fun exampleStatement() {
         val performanceList = PerformanceList(
             listOf(
-                Performance(Play("Hamlet", "tragedy"), 55),
-                Performance(Play("As You Like It", "comedy"), 35),
-                Performance(Play("Othello", "tragedy"), 40)
+                Performance(Tragedy("Hamlet"), 55),
+                Performance(Comedy("As You Like It"), 35),
+                Performance(Tragedy("Othello"), 40)
             )
         )
         val invoice = Invoice("BigCo", performanceList)
@@ -20,19 +20,5 @@ class StatementPrinterTests {
         val result = statementPrinter.print(invoice)
 
         verify(result)
-    }
-
-    @Test
-    internal fun statementWithNewPlayTypes() {
-        val performanceList = PerformanceList(
-            listOf(
-                Performance(Play("Henry V", "history"), 53),
-                Performance(Play("As You Like It", "pastoral"), 55)
-            )
-        )
-        val invoice = Invoice("BigCo", performanceList)
-        val statementPrinter = StatementPrinter()
-        
-        assertThrows(Error::class.java) { statementPrinter.print(invoice) }
     }
 }

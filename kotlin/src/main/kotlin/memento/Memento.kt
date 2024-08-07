@@ -4,5 +4,5 @@ interface Memento {
 }
 
 interface State<T: Memento> {
-    fun save(): T
+    fun state(): T
 }
